@@ -165,3 +165,102 @@ def crear_modelo(df):
     
     # Transformar los valores predichos a la escala original
     return predictions 
+
+def predict_values(model, df):
+    import pandas as pd
+    import numpy as np
+    from sklearn.preprocessing import MinMaxScaler
+    
+    datas = {
+        'date': df["date"],
+        'close': df["close"]
+    }
+    data = pd.DataFrame(datas)
+    data['date'] = pd.to_datetime(data['date'])
+    data.set_index('date', inplace=True)
+
+    data = data.ffill()
+
+    # Preprocesamiento de datos
+    # Supongamos que usamos los últimos 60 días para predecir el próximo día
+    window_size = 60
+    features = []
+    labels = []
+    for i in range(window_size, len(data)):
+        features.append(data['close'][i-window_size:i])
+        labels.append(data['close'][i])
+
+    # Convertir a arrays de numpy para entrenamiento
+    features, labels = np.array(features), np.array(labels)
+
+    train_features = features[:]
+    train_labels = labels[:]
+
+    # Normalizar los datos
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    train_features_scaled = scaler.fit_transform(train_features)  # Ajustar y transformar los datos de entrenamiento
+
+    # Reshape features para el modelo LSTM (muestras, pasos de tiempo, características)
+    train_features = np.reshape(train_features_scaled, (train_features_scaled.shape[0], train_features_scaled.shape[1], 1))
+
+
+    # Tomar los últimos 'window_size' puntos de los datos como punto de partida
+    input_sequence = data['close'][-window_size:].values.reshape(1, -1)
+    input_sequence_scaled = scaler.transform(input_sequence)
+
+    predictions = []
+    for _ in range(30):  # Predice 30 valores futuros
+        # Reshape del input para que coincida con la entrada del modelo (1, window_size, 1)
+        reshaped_input = np.reshape(input_sequence_scaled, (1, window_size, 1))
+        # Predecir el siguiente valor
+        predicted_value = model.predict(reshaped_input)
+        predictions.append(predicted_value[0][0])
+        # Añadir la predicción al input para la siguiente iteración
+        input_sequence_scaled = np.append(input_sequence_scaled[:, 1:], predicted_value, axis=1)
+    
+    # Transformar los valores predichos a la escala original
+    return predictions 
+
+
+
+def plot_chart(dataframe,title):
+    import plotly.graph_objects as go
+    fig = go.Figure(data=[go.Candlestick(x=dataframe['date'],
+                                         open=dataframe['open'],
+                                         high=dataframe['high'],
+                                         low=dataframe['low'],
+                                         close=dataframe['close'])])
+    fig.update_layout(title=title,
+                      xaxis_title='Date',
+                      yaxis_title='Price (USDT)',
+                      xaxis_rangeslider_visible=False)
+    return fig
+
+def plot_chart_pred(df,predictions):
+    import pandas as pd
+    import plotly.express as px
+    
+    datas = {
+        'date': df["date"],
+        'close': df["close"]
+    }
+    data = pd.DataFrame(datas)
+    data['date'] = pd.to_datetime(data['date'])
+    data.set_index('date', inplace=True)
+
+    data = data.ffill()
+    
+    date_range = pd.date_range(start=data.index.max(), periods=30, freq='H')
+
+    predictions = pd.DataFrame(data=predictions, index=date_range)
+
+    fig = px.line(data, x=data.index, y='close', labels={'close': 'Value'}, title='Comparison of Real and Predicted Values')
+    fig.add_scatter(x=predictions.index, y=predictions[0], mode='lines', name='Predicted Values', opacity=0.7)
+    
+    fig.update_layout(xaxis_title='Time (index)', yaxis_title='Value')
+ 
+
+    return fig
+
+
+
