@@ -166,7 +166,7 @@ def crear_modelo(df):
     # Transformar los valores predichos a la escala original
     return predictions 
 
-def predict_values(model, df):
+def predict_values(model, df, horas):
     import pandas as pd
     import numpy as np
     from sklearn.preprocessing import MinMaxScaler
@@ -209,7 +209,7 @@ def predict_values(model, df):
     input_sequence_scaled = scaler.transform(input_sequence)
 
     predictions = []
-    for _ in range(30):  # Predice 30 valores futuros
+    for _ in range(horas):  # Predice 30 valores futuros
         # Reshape del input para que coincida con la entrada del modelo (1, window_size, 1)
         reshaped_input = np.reshape(input_sequence_scaled, (1, window_size, 1))
         # Predecir el siguiente valor
@@ -236,7 +236,7 @@ def plot_chart(dataframe,title):
                       xaxis_rangeslider_visible=False)
     return fig
 
-def plot_chart_pred(df,predictions):
+def plot_chart_pred(df,predictions, horas):
     import pandas as pd
     import plotly.express as px
     
@@ -249,8 +249,8 @@ def plot_chart_pred(df,predictions):
     data.set_index('date', inplace=True)
 
     data = data.ffill()
-    
-    date_range = pd.date_range(start=data.index.max(), periods=30, freq='H')
+
+    date_range = pd.date_range(start=data.index.max(), periods=horas, freq='H')
 
     predictions = pd.DataFrame(data=predictions, index=date_range)
 

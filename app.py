@@ -3,6 +3,11 @@ from Funciones import plot_chart, descargar_datos, cargar_limpiar_datos, crear_t
 import joblib
 
 def main():
+
+    st.set_page_config(page_title='xxxxxxx', layout='wide',
+                #   initial_sidebar_state=st.session_state.get('sidebar_state', 'collapsed'),
+    )
+
     st.title('Precio del Bitcoin')
 
     st.write("### Text here")
@@ -31,7 +36,7 @@ def main():
 
     prectict = predict_values(model, df_horas, horas_pred)
 
-    plt = plot_chart_pred(df_horas, prectict)
+    plt = plot_chart_pred(df_horas, prectict, horas_pred)
 
     st.plotly_chart(plt)
 
