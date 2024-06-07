@@ -2,7 +2,7 @@ joblib
 pandas
 streamlit
 tensorflow
-sklearn
+scikit-learn
 numpy
 gdown
 yaml
