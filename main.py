@@ -1,8 +1,6 @@
-from Funciones import descargar_datos, cargar_limpiar_datos, crear_tabla_por_horas, crear_tabla_por_dia, crear_modelo, plot_chart
+from Funciones import  cargar_limpiar_datos, crear_tabla_por_horas, crear_tabla_por_dia, crear_modelo, plot_chart
 
-url = "app.py"
-
-df = cargar_limpiar_datos(url)
+df = cargar_limpiar_datos()
 
 df_horas = crear_tabla_por_horas(df)
 

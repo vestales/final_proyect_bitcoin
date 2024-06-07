@@ -1,5 +1,5 @@
 import streamlit as st
-from Funciones import plot_chart, descargar_datos, cargar_limpiar_datos, crear_tabla_por_dia, crear_tabla_por_horas, predict_values, plot_chart_pred
+from Funciones import plot_chart, cargar_limpiar_datos, crear_tabla_por_dia, crear_tabla_por_horas, predict_values, plot_chart_pred
 import joblib
 
 def main():
@@ -13,12 +13,10 @@ def main():
     st.write("### Aqui vemos como esta el precio del Bitcoin en horas y dias.")
 
     # Interactive widgets
-    st.sidebar.header('')
-    horas_pred = st.sidebar.slider('Horas que desea predecir', min_value=1, max_value=100, value=30, step=1)
+    st.sidebar.header('Horas que desea predecir')
+    horas_pred = st.sidebar.slider('', min_value=1, max_value=100, value=30, step=1)
 
-    url = descargar_datos()
-
-    df = cargar_limpiar_datos(url)
+    df = cargar_limpiar_datos()
 
     df_horas = crear_tabla_por_horas(df)
 

@@ -7,8 +7,8 @@ def read_config(file_path):
     return config
 
 
-def descargar_datos():
-    import gdown
+def cargar_limpiar_datos():
+    import pandas as pd
 
     # Ruta al archivo config.yaml
     config_file_path = 'config.yaml'
@@ -18,20 +18,9 @@ def descargar_datos():
 
     # Acceder a los valores del archivo YAML
     data_url = config['data']
-
-    # Ruta local donde se guardará el archivo descargado
-    output = 'archivo.csv'
-
-    # Descargar el archivo
-    gdown.download(data_url, output, quiet=False)
-
-    # Devolvemos la ruta de la base de datos
-    return output
-
-def cargar_limpiar_datos(output):
-    import pandas as pd
+    
     # Creamos un dataframe con la base de datos
-    df = pd.read_csv(output)
+    df = pd.read_csv(data_url)
 
     # Ponemos la fecha en tipo fecha 
     df["date"] = pd.to_datetime(df["date"])
