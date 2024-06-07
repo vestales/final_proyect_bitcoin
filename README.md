@@ -33,9 +33,9 @@ Gráfica que muestra el precio del bitcoin por horas.
 
 Gráfica que muestra el precio del bitcoin por dias.
 
-![Fidelidad de Usuarios por variación](https://drive.google.com/uc?export=view&id=1KTSrBG0Cpr2O7BIWaYcjdPzXUrlqJUVe)
+![Perdicion del tiempo](https://drive.google.com/uc?export=view&id=1KTSrBG0Cpr2O7BIWaYcjdPzXUrlqJUVe)
 
-Gráfica que muestra el porcentaje de fidelidad de los usuarios por variación.
+Gráfica que muestra la predicion del precio.
 
 
 
