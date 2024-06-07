@@ -1,0 +1,9 @@
+joblib
+pandas
+streamlit
+tensorflow
+sklearn
+numpy
+gdown
+yaml
+plotly
