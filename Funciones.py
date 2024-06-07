@@ -254,7 +254,7 @@ def plot_chart_pred(df,predictions, horas):
 
     predictions = pd.DataFrame(data=predictions, index=date_range)
 
-    fig = px.line(data, x=data.index, y='close', labels={'close': 'Value'}, title='Comparison of Real and Predicted Values')
+    fig = px.line(data, x=data.index, y='close', labels={'close': 'Value'}, title='Comparacion del precio real al de la predicion')
     fig.add_scatter(x=predictions.index, y=predictions[0], mode='lines', name='Predicted Values', opacity=0.7)
     
     fig.update_layout(xaxis_title='Time (index)', yaxis_title='Value')

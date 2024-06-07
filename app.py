@@ -4,16 +4,16 @@ import joblib
 
 def main():
 
-    st.set_page_config(page_title='xxxxxxx', layout='wide',
+    st.set_page_config(page_title='Predicion del precio del Bitcoin', layout='wide',
                 #   initial_sidebar_state=st.session_state.get('sidebar_state', 'collapsed'),
     )
 
-    st.title('Precio del Bitcoin')
+    st.title('Predicion del precio del Bitcoin')
 
-    st.write("### Text here")
+    st.write("### Aqui vemos como esta el precio del Bitcoin en horas y dias.")
 
     # Interactive widgets
-    st.sidebar.header('Controls')
+    st.sidebar.header('')
     horas_pred = st.sidebar.slider('Horas que desea predecir', min_value=1, max_value=100, value=30, step=1)
 
     url = descargar_datos()
@@ -26,7 +26,7 @@ def main():
 
     plt_horas = plot_chart(df_horas,'BTC/USDT precio por horas')
 
-    plt_dias = plot_chart(df_dias,'BTC/USDT precia por dias')
+    plt_dias = plot_chart(df_dias,'BTC/USDT precio por dias')
     
     st.plotly_chart(plt_horas)
 
@@ -35,6 +35,8 @@ def main():
     model = joblib.load('model.pkl')
 
     prectict = predict_values(model, df_horas, horas_pred)
+
+    st.write("### Aqui vemos el precio con la predicion hecha.")
 
     plt = plot_chart_pred(df_horas, prectict, horas_pred)
 
